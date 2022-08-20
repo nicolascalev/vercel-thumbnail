@@ -1,5 +1,5 @@
 import getRenderedPage from './_utils/getRenderedPage';
-import puppeteer from 'puppeteer';
+import chromium from "chrome-aws-lambda";
 import stream from 'stream';
 import resizeImg from 'resize-img';
 
@@ -23,7 +23,9 @@ export default async function handler(req, res) {
   }
 
   const pageTemplate = getRenderedPage(params);
-  const browser = await puppeteer.launch();
+  const browser = await chromium.puppeteer.launch({
+    executablePath: await chromium.executablePath,
+  });
   const page = await browser.newPage();
   try {
     await page.setViewport({ width: 1920, height: 1080 })
