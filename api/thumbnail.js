@@ -24,7 +24,11 @@ export default async function handler(req, res) {
 
   const pageTemplate = getRenderedPage(params);
   const browser = await chromium.puppeteer.launch({
+    args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
+    defaultViewport: chromium.defaultViewport,
     executablePath: await chromium.executablePath,
+    headless: true,
+    ignoreHTTPSErrors: true,
   });
   const page = await browser.newPage();
   try {
